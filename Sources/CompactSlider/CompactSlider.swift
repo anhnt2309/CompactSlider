@@ -335,8 +335,33 @@ struct CompactSliderPreview: View {
                 .padding(.horizontal, 20)
             
             Group {
-                CompactSlider(value: $progress)
-                    .compactSliderStyle(default: .scrollable(handleStyle: .init(width: 1)))
+                CompactSlider(value: $centerProgress, in: 0 ... 360, step: 5)
+                    .compactSliderStyle(default: .scrollable(
+                        handleStyle: .init(width: 2),
+                        scaleStyle: .init(
+                            alignment: .bottom,
+                            line: .init(length: 20),
+                            secondaryLine: .init(
+                                color: Defaults.label.opacity(Defaults.secondaryScaleLineOpacity),
+                                length: 10
+                            )
+                        )
+                    ))
+                    .compactSliderBackgroundView { _ in
+                        EmptyView()
+                    }
+                    .compositingGroup()
+                    .mask(
+                        LinearGradient(
+                            colors: [.clear, .white, .white, .white, .clear],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .overlay(
+                        Text("\(Int(centerProgress))º")
+                            .offset(y: -24)
+                    )
                 
                 CompactSlider(value: $progress)
                 
